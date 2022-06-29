@@ -1,0 +1,59 @@
+import { Pipe, PipeTransform } from '@angular/core';
+import { stringify } from 'querystring';
+import { LowerCasePipe } from '@angular/common';
+
+@Pipe({
+  name: 'truncate'
+})
+export class TruncatePipe implements PipeTransform {
+
+  transform(value: any, limitMax: number): any {
+    // let limit = parseInt( limitMax );
+    return value.length > limitMax ? value.substring(0, limitMax) + '...' : value;
+  }
+
+}
+
+@Pipe({
+    name: 'trimear'
+})
+export class StrTrim implements PipeTransform {
+
+    transform(value: string): string {
+       return value.trim();
+    }
+}
+
+@Pipe({
+    name: 'copiar'
+})
+export class StrCopy implements PipeTransform {
+
+    transform(str: string, posIni: number, len: number): string {
+       let res = '';
+
+       for ( let i = 0; i < len; i++ ) {
+          res = res + str[posIni];
+          posIni++;
+       }
+       return res;
+    }
+}
+
+@Pipe({
+  name: 'notImage'
+})
+export class NotImagesPipe implements PipeTransform {
+  transform( images: any[]): string {
+      const sPathImage = 'assets/img/noimage.png';
+      
+      if ( !images ) {
+        return sPathImage;
+      }
+      if ( images.length > 0 ) {
+        return images[0].url;
+      } else {
+        return sPathImage;  
+      }
+  }
+}
