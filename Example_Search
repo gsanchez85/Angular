@@ -1,0 +1,43 @@
+An example of how to do a search using the Spotify API:
+
+Code search.component.ts:
+
+import { Component } from '@angular/core';
+import { SpotifyService } from '../../services/spotify.service';
+
+@Component({
+  selector: 'app-search',
+  templateUrl: './search.component.html',
+  styles: []
+})
+export class SearchComponent {
+
+  artits: any[] = [];
+  loading: boolean;
+
+  constructor(private spotify: SpotifyService) {  
+  }
+
+  search(word: string) {
+    if ( word.trim() === '' )
+      return;
+    this.loading = true;
+    this.spotify.getArtists(word).subscribe( (data: any) => {
+      // console.log(data.artists.items);
+      if ( data != null )
+        this.artits = data; // .artists.items;
+      this.loading = false;
+    });
+  }
+}
+
+Code search.component.html:
+
+<div class="row">
+    <div class="col">
+        <input #word type="text" (keyup)="search(word.value)" class="form-control" placehodler="">
+    </div>
+</div>
+<hr>
+<app-loading *ngIf="loading" class="m-5"></app-loading>
+<app-track *ngIf="!loading" [items]="artists"></app-track>
